@@ -57,7 +57,9 @@ class WP_Spotify {
 		add_action( 'init', array( $this, 'action_init' ) );
 		// Lets get dirty
 		spl_autoload_register(function($className) { 
-    		require_once( SPTFY_PATH . '/includes/metatune/lib/' . str_replace('\\', '/', ltrim($className, '\\')) . '.class.php'); 
+			$file = SPTFY_PATH . '/includes/metatune/lib/' . str_replace('\\', '/', ltrim($className, '\\')) . '.class.php';
+			if ( file_exists( $file ) )
+    			require_once( SPTFY_PATH . '/includes/metatune/lib/' . str_replace('\\', '/', ltrim($className, '\\')) . '.class.php'); 
 		}); 
 		$this->sp = MetaTune\MetaTune::getInstance();
 	}
@@ -80,7 +82,7 @@ class WP_Spotify {
 	}
 
 	function action_admin_scripts() {
-		
+
 	}
 
 	function action_enqueue_scripts() {
