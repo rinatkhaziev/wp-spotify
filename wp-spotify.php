@@ -44,13 +44,22 @@ define( 'SPTFY_VERSION', '0.1.0' );
 define( 'SPTFY_URL',     plugin_dir_url( __FILE__ ) );
 define( 'SPTFY_PATH',    dirname( __FILE__ ) . '/' );
 
+
+
+
 class WP_Spotify {
 
 	// Plugin properties
+	public $sp;
 
 	function __construct() {
 		// Hook the init
 		add_action( 'init', array( $this, 'action_init' ) );
+		// Lets get dirty
+		spl_autoload_register(function($className) { 
+    		require_once( SPTFY_PATH . '/includes/metatune/lib/' . str_replace('\\', '/', ltrim($className, '\\')) . '.class.php'); 
+		}); 
+		$this->sp = MetaTune\MetaTune::getInstance();
 	}
 
 	function action_init() {
@@ -64,7 +73,18 @@ class WP_Spotify {
 		add_action( 'wp_enqueue_scripts', array( $this, 'action_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_admin_scripts' ) );
 		add_action( 'admin_init', array( $this, 'action_admin_init' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, '' ) );
+	}
+
+	function action_admin_init() {
+
+	}
+
+	function action_admin_scripts() {
+		
+	}
+
+	function action_enqueue_scripts() {
+
 	}
 
 	// Setup
